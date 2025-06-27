@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 19935-webapp-deployment
+  namespace: 19935-project
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: 19935-webapp-deployment
+        image: vino1991/backendnode:v1  # Replace with your actual backend image name
+        ports:
+        - containerPort: 8001
+        env:
+            - name: APP_KEY 
+              valueFrom:
+                secretKeyRef:
+                  name: webapp-secret-19935
+                  key: APP_KEY
+            - name: WELCOME_MSG
+              valueFrom:
+                configMapKeyRef:
+                  name: webapp-config-19935
+                  key: WELCOME_MSG
+
